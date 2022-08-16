@@ -1148,11 +1148,11 @@ void BertGonjun()
 
 void GoldBath()
 {
-    int testCount;
+    int testCase;
     int N;
-    cin >> testCount >> N;
+    cin >> testCase;
 
-    int arr[10001];
+    bool arr[10001];
 
     // 1. 채로 2 ~ 10,000 까지 소수를 걸러낸다
     // if(i ==  소수)
@@ -1161,21 +1161,81 @@ void GoldBath()
     // 3. 3... 4.... 루프한다. 
 
     // 1. 채 만들기
-    // 배열 초기화
+        // 배열 초기화
     for (int i = 2; i <= 10000; i++)
     {
-        arr[i] = true;
+        arr[i] = 1;
+    }
+    
+
+    for (int i = 2; i * i <= 10000; i++)
+    {
+        if (arr[i] == 0) continue;
+
+        for (int j = i + i; j <= 10000; j += i)
+        {
+            arr[j] = 0;
+        }
     }
 
-   
-
     // 알고리즘 수행
+    for(int t = 0; t < testCase; t++)
+    {
+        cin >> N;
 
+        int ansA = 0;
+        int ansB = 0;
+        for(int i = N * 0.5; i >= 2; i--)
+        {
+            if(arr[i] == 0) continue;
+
+            for(int j = N * 0.5; j < N; j++)
+            {
+                if(arr[j] == 0) continue;
+
+                if(i + j == N) 
+                {
+                    ansA = i;
+                    ansB = j;
+                    break;
+                }
+            }
+            if(ansA > 0) break;
+        }
+
+        cout << ansA << " " << ansB << "\n";
+    }
+
+}
+
+int Factorial(int N)
+{
+    if(N <= 1) return 1;
+    return N * Factorial(N-1);
+
+    /*
+    int n = 0;
+    cin >> n;
+    n = Factorial(n);
+    cout << n;*/
+}
+
+int Pibonachi(int N)
+{
+    if(N == 0) return 0;
+    if(N == 1) return 1;
+
+    return Pibonachi(N-1) + Pibonachi(N-2);
 }
 
 int main()
 {
-    GoldBath();
+    int a;
+    cin >> a;
+
+
+    a = Pibonachi(a);
+    cout << a;
 
     return 0;
 }
