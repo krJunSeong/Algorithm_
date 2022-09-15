@@ -1343,8 +1343,130 @@ void hanoi(int N, int startPoint, int destnation, int reference)
     */
 }
 
+void Blackjack()
+{
+    int N;
+    int M;
+
+    cin >> N >> M;
+
+    vector<int> vNum;
+
+    for(int i = 0; i < N; i++)
+    {
+        int temp;
+        cin >> temp;
+
+        vNum.push_back(temp);
+    }
+
+    sort(vNum.begin(), vNum.end(), greater<int>());
+
+    // 제일 큰 수 + 그 다음으로 큰 수
+
+    // 2번째
+    int nowNum = 0;
+    int maxNum = 0;
+    for(int k = 0; k < vNum.size() - 2; k++)
+    {
+        for(int i = k + 1; i < vNum.size() - 1; i++)
+        {
+            nowNum = vNum[k] + vNum[i];
+
+            if(nowNum >= M) continue;
+
+            // 나머지 수 구하는 곳
+            for(int j = i + 1; j < vNum.size(); j++)
+            {
+                nowNum += vNum[j];
+
+                if(nowNum == M) 
+
+                {
+                    cout << nowNum;
+                    return;
+                }
+                else if( maxNum < nowNum && nowNum < M)
+                {
+                    maxNum = nowNum;
+                }
+
+                nowNum -= vNum[j];
+            }
+        }
+    }
+
+    cout << maxNum;
+}
+
+void BunhaeHab()
+{
+    int quest;
+    cin >> quest;
+
+    for(int i = 1; i < quest; i++)
+    {
+        string temp;
+        temp = to_string(i);
+
+        int itemp = i;
+        for(char a : temp)
+        {
+            itemp += (a - '0');
+        }
+
+        if(itemp == quest)
+        {
+            cout << i;
+            return;
+        }
+    }
+    //1. 수를 하나 받는다
+    //2. 받은 수의 생성자을 구한다.
+    //3. 출력한다.
+
+    cout << 0;
+}
+
+void Dungchi()
+{
+    vector<pair<int, int>> a;
+
+    int n;
+    cin >> n;
+
+    for(int i = 0; i < n; i++)
+    {
+        int x;
+        int y;
+
+        cin >> x >> y;
+
+        a.push_back(make_pair(x,y));
+    }
+
+    for(int i = 0; i < n; i++)
+    {
+        int grade = 1;
+
+        for(int j = 0; j < n; j++)
+        {
+            if( i == j ) continue;
+
+            if(a[i].first < a[j].first && a[i].second < a[j].second) 
+                grade++;
+
+        }
+
+        cout << grade;
+
+        if(i < (n-1)) cout << ' ';
+    }
+}
+
 int main()
 {
+    Dungchi();
 
     return 0;
 }
