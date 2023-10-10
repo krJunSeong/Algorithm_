@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <string>
 #include <random>
+#include <set>
+#include <queue>
 
 using namespace std;
 
@@ -1464,9 +1466,265 @@ void Dungchi()
     }
 }
 
+void ChessPhan()
+{
+    int n, m;
+    int cnt = 0;
+    char c, nc;
+    cin >> n;
+    cin >> m;
+
+    string s;
+    cin >> s;
+    cout << s;
+    //for(int i = 0; i < n; i++)
+    //{
+    //    for(int j = 0; j < m-1; j++)
+    //    {
+    //        char c;
+    //        cin >> c;
+
+    //        
+    //    }
+    //}
+
+    cout << cnt;
+}
+
+void Wizang()
+{
+    vector<vector<string>> clothes = { {"yellow_hat","headgear"},{"blue_sunglasses", "eyewear"},{"green_turban", "headgear"} };
+    map<string, int> map;
+
+    int answer = 1;
+
+    for (auto i : clothes)
+        map[i[1]]++;
+
+    for (auto i : map)
+        answer *= i.second;
+
+    cout << answer << endl;
+}
+
+bool cmp(pair<string, int> a, pair<string, int> b)
+{
+    return a.second > b.second;
+} //내림차순
+
+bool cmp2(pair<int, int> a, pair<int, int> b)
+{
+    return a.second > b.second;
+} //내림차순
+
+vector<int> BestAlbum()
+{
+    vector<string> genres = { "classic", "pop", "classic", "classic", "pop" };
+    vector<int> plays = { 500, 600, 150, 800, 2500 };
+
+    map<string, int> genresSum;               // 각 장르 : 플레이수
+    map<string, vector<int>> genresUniqueNum; // 각 장르 : 고유번호
+
+    vector<int> answer;
+    map<string, int> sumGenresPlays;          // 장르 : 총플레이수
+    map<string, vector<pair<int, int>>> map2; // 장르 : vector<고유번호, 재생수>
+
+    // 1. 장르 : 플레이총합
+    for (int i = 0; i < genres.size(); i++)
+    {
+        sumGenresPlays[genres[i]] += plays[i];    // 장르 : 플레이총합
+        map2[genres[i]].push_back({ i, plays[i] }); // 장르 : vector<고유번호, 재생수>
+    }
+
+    // 2. 장르: 플레이총합 벡터에 옮겨서 내림차순 정렬
+    vector<pair<string, int>> vGenresPlaySum(sumGenresPlays.begin(), sumGenresPlays.end());
+
+    // 2-1) 장르 : 플레이총합 정렬
+    sort(vGenresPlaySum.begin(), vGenresPlaySum.end(), cmp);
+
+    // 2-2) 장르 : vector<고유번호, 재생수>, 재생수 기준 정렬
+    for (auto& i : map2)
+    {
+        sort(i.second.begin(), i.second.end(), cmp2);
+    }
+
+    // 3. 장르별 재생순위를 구했으니, vGenresPlaySum의 장르(first)를 받아서
+    //    map2[장르]의 벡터[0], [1]을 answer에 넣어준다.
+    for (auto i : vGenresPlaySum)
+    {
+        if (map2[i.first].size() < 2)
+            answer.push_back(map2[i.first][0].first);
+        else
+        {
+            answer.push_back(map2[i.first][0].first);
+            answer.push_back(map2[i.first][1].first);
+        }
+    }
+
+    for (auto i : answer)
+        cout << i << endl;
+
+    return answer;
+}
+
+void FunctionDevelope()
+{
+    vector<int> progresses({ 93, 30, 55 });
+    vector<int> speeds({ 1, 30, 5 });
+    vector<int> answer;
+    queue<int> q;
+
+    // 100 - 프로그레스.size()
+    // q에 
+    for (int i = 0; i < progresses.size(); i++) {
+        if ((100 - progresses[i]) % speeds[i] == 0) {
+            q.push((100 - progresses[i]) / speeds[i]);
+        }
+        else {
+            q.push((100 - progresses[i]) / speeds[i] + 1);
+        }
+    }
+
+    // q가 비어있지 않으면 반복
+    while (!q.empty()) {
+        int cnt = 1;                // cnt = 1
+        int current = q.front();    // 현재: q의 맨앞
+        q.pop();                    // q 맨 앞 비워주고
+
+        // q가 비어있지 않고, q의 front가 현재값보다 작다면
+        while (!q.empty() && q.front() <= current) {
+            cnt++;      // cnt++
+            q.pop();    // q 앞에 비워주고
+        }
+        answer.push_back(cnt);
+    }
+}
+
+void FunctionDevelopeDay2()
+{
+    vector<int> progresses({ 93, 30, 55 });
+    vector<int> speeds({ 1, 30, 5 });
+    vector<int> answer;
+    vector<int> q;
+    int cnt = 0;
+
+    for (int i = 0; i < progresses.size(); i++)
+    {
+        if ((100 - progresses[i]) % speeds[i] == 0)
+        {
+            q.push_back((100 - progresses[i]) / speeds[i]);
+        }
+        else
+            q.push_back((100 - progresses[i]) / speeds[i] + 1);
+    }
+
+    int cntNum = 1;
+    int curNum;
+    while (!q.empty())
+    {
+        cntNum = 1;
+        curNum = q[0];
+        q.erase(q.begin());
+
+        while (!q.empty() && q[0] <= curNum)
+        {
+            cntNum++;
+            q.erase(q.begin());
+        }
+
+        answer.push_back(cntNum);
+    }
+}
+
+class A
+{
+public:
+    A(){}
+    virtual void Update() { cout << "AUpdate()" << endl;}  
+};
+
+class B : public A
+{
+public:
+    B() {}
+    void Update() { cout << "BUpdate()" << endl; }
+};
+
+class C : public B
+{
+public:
+    C() {}
+    void Update() { cout << "CUpdate()" << endl; }
+};
+
+int SearchBinary(int item, vector<int> list)
+{
+    int low = 0;
+    int high = list.size()-1;
+
+    while(low <= high)
+    {
+        int mid = (low + high) / 2;
+        int guess = list[mid];
+
+        if(guess == item) return mid;
+
+        if(item > guess) low = mid + 1;
+        else high = mid - 1;
+    }
+    
+    return -1;
+
+    /*
+    int main()
+    {
+      vector<int> myList{1, 3, 5, 7, 9}; 
+      cout << SearchBinary(1, myList);
+    }
+    */
+}
+
+int lowNumInArr(vector<int> arr)
+{
+    int index = 0;
+    int lowNum = INT_MAX;
+
+    for(int i = 0; i < arr.size(); i++)
+    {
+        if(arr[i] < lowNum)
+        {
+            lowNum = arr[i];
+            index = i;
+        }
+    }
+
+    return index;
+}
+
+void selectionSort()
+{
+    vector<int> a{5, 3, 6, 2, 10};
+    vector<int> answer;
+
+    int size = a.size();
+
+    for (size_t i = 0; i < size; i++)
+    {
+        int index = lowNumInArr(a);
+        answer.push_back(a[index]);
+        a.erase(a.begin() + index);
+    }
+
+    
+    for(auto i : answer)
+        cout << i << " ";
+}
+
 int main()
 {
-    Dungchi();
-
-    return 0;
+    selectionSort();
+    //FunctionDevelopeDay2();
+    // 
+    //C c;
+    //c.Update();
 }
