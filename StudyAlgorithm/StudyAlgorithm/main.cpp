@@ -1719,10 +1719,53 @@ void selectionSort()
     for(auto i : answer)
         cout << i << " ";
 }
+vector<int> quickSort(vector<int> inputVector)
+{
+    if(inputVector.size() < 2) return inputVector;
+
+    int pivot = inputVector[0];
+    
+    vector<int> lessVector;
+    vector<int> greaterVector;
+
+    for(int i = 1; i < inputVector.size(); i++)
+    {
+        if(inputVector[i] < pivot)
+        {
+            lessVector.push_back(inputVector[i]);
+        }
+        else
+        {
+            greaterVector.push_back(inputVector[i]);
+        }
+    }
+
+    vector<int> totalLessVector = quickSort(lessVector);
+    vector<int> totalGreaterVector = quickSort(greaterVector);
+
+    vector<int> total(totalLessVector);
+    total.push_back(pivot);
+    
+    for(auto i : totalGreaterVector)
+        total.push_back(i);
+
+    return total;
+
+    /*
+    int main()
+    {
+        vector<int> temp{11,9,24,3,5,6,7,8};
+
+        vector<int> i = quickSort(temp);
+
+        for(auto k : i)  cout << k << " ";
+    }
+    */
+}
 
 int main()
 {
-    selectionSort();
+
     //FunctionDevelopeDay2();
     // 
     //C c;
