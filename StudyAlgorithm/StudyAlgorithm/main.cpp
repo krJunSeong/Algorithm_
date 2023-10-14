@@ -1763,9 +1763,39 @@ vector<int> quickSort(vector<int> inputVector)
     */
 }
 
+void SearchDragUser()
+{
+    map<string, vector<string>> graph;
+    graph["you"] = { "alice", "bob", "Clare" };
+    graph["bob"] = { "anju", "pegy" };
+    graph["alice"] = { "pegy" };
+    graph["Clare"] = { "tom", "jony" };
+    graph["anju"];
+    graph["pegy"];
+    graph["tom"];
+    graph["jony"];
+
+    string a{ "strm" };
+    cout << a << endl;
+
+    queue<string> q;
+
+    for (auto& i : graph["you"])
+    {
+        q.push(i);
+    }
+
+    //while (q.size())
+    //{
+    //    if(q.front())
+    //}
+    
+    //printf(" ");
+}
+
 int main()
 {
-
+    SearchDragUser();
     //FunctionDevelopeDay2();
     // 
     //C c;
