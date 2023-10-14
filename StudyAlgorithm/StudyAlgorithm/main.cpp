@@ -1763,20 +1763,17 @@ vector<int> quickSort(vector<int> inputVector)
     */
 }
 
-void SearchDragUser()
+string SearchDragUser()
 {
     map<string, vector<string>> graph;
-    graph["you"] = { "alice", "bob", "Clare" };
-    graph["bob"] = { "anju", "pegy" };
-    graph["alice"] = { "pegy" };
-    graph["Clare"] = { "tom", "jony" };
+    graph["you"] = {"alice", "bob", "Clare"};
+    graph["bob"] = {"anju", "pegy"};
+    graph["alice"] = {"pegy"};
+    graph["Clare"] = {"tom", "jony"};
     graph["anju"];
     graph["pegy"];
     graph["tom"];
     graph["jony"];
-
-    string a{ "strm" };
-    cout << a << endl;
 
     queue<string> q;
 
@@ -1785,17 +1782,33 @@ void SearchDragUser()
         q.push(i);
     }
 
-    //while (q.size())
-    //{
-    //    if(q.front())
-    //}
+    while (q.size())    // q 없을 때까지 반복
+    {
+        // 마약상이면 리턴
+        if (q.front().back() == 'm')
+        {
+            cout << "범인: " << q.front() << endl;
+            return q.front();
+        }
+
+        else // 마약상 아니라면 큐에 연관사람 추가
+        {
+            for (auto& i : graph[q.front()])
+            {
+                q.push(i);
+            }
+
+            q.pop();
+        }
+    }
     
     //printf(" ");
 }
 
 int main()
 {
-    SearchDragUser();
+    //SearchDragUser();
+
     //FunctionDevelopeDay2();
     // 
     //C c;
