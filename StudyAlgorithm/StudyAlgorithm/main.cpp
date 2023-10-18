@@ -1805,12 +1805,38 @@ string SearchDragUser()
     //printf(" ");
 }
 
+void djstra()
+{
+
+}
+
 int main()
 {
     //SearchDragUser();
-
+    djstra();
     //FunctionDevelopeDay2();
     // 
     //C c;
     //c.Update();
 }
+
+/* map 荤侩过, #map #map<map> #map<int>
+
+    map<string, vector<pair<string, int>>> a;
+    a["start"].push_back({ "A", 1 });
+    a["start"].push_back({ "B", 2 });
+
+    cout << a["start"][0].first << " " << a["start"][0].second << endl;
+    cout << a["start"][1].first << " " << a["start"][1].second << endl;
+
+    map<string, map<string, int>> mb;
+    mb["string"]["a"] = 6;
+    mb["string"]["b"] = 8;
+    mb["string"].insert({ "c", 9 });
+
+    cout << "a: " << mb["string"]["a"] << endl;
+    cout << "b: " << mb["string"]["b"] << endl;
+
+    // 规过 1) mb["string"]["a"] = 6;
+    // 规过 2) mb["string"].insert({"c", 9});
+*/
