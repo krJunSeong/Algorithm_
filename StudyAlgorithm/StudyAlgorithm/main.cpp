@@ -1805,9 +1805,92 @@ string SearchDragUser()
     //printf(" ");
 }
 
+//다익스트라
+void graphInit(map<string, map<string, int>>& _graph)
+{
+    _graph["strat"]["a"] = 6;
+    _graph["strat"]["b"] = 2;
+
+    _graph["a"]["fin"] = 1;
+    
+    _graph["b"]["a"] = 3;
+    _graph["b"]["fin"] = 5;
+    
+    _graph["fin"];
+}
+
+void costInit(map<string, int>& _cost)
+{
+    _cost["a"] = 6;
+    _cost["b"] = 2;
+    _cost["fin"] = INT_MAX;
+}
+
+void parentsInit(map<string, string>& _parents)
+{
+    _parents["a"] = "start";
+    _parents["b"] = "start";
+    _parents["fin"] = "";
+
+}
+
+// 코스트가 적은 노드 찾기
+string FindLowCostNode(map<string, int> costs, map<string, bool> _processed)
+{
+    int lowCost = INT_MAX;
+    string lowCostNode = "";
+    
+    for (auto node : costs)             // 비용표
+    {
+        int cost = costs[node.first];   // for: 현재 노드의 비용
+
+        // 비용표에서 제일 작은 코스트 노드 찾기
+        if (cost < lowCost && (_processed[node.first] == false))
+        {
+            lowCost = cost;
+            lowCostNode = node.first;
+        }
+    }
+
+    return lowCostNode;
+}
+
 void djstra()
 {
+    map<string, int>              costs;
+    map<string, string>           parents;
 
+    map<string, map<string, int>> graph;
+    map<string, bool> processed;
+
+    // 그래프, 코스트, 부모표 정리
+    graphInit(graph); 
+    costInit(costs);
+    parentsInit(parents);
+
+    string node = FindLowCostNode(costs, processed);
+    while (node.size() > 0)
+    {
+        int cost = costs[node];         // 현재 노드의 비용
+        auto edgeNodes = graph[node];   // 현재 노드와 이어진 노드:비용
+
+        for (auto n : edgeNodes)
+        {
+            int newCost = cost + edgeNodes[n.first];    // ex) 스타트->B 코스트: 2,
+                                                        //         B->A   cost: 3, 2+3 = 5
+            if (costs[n.first] > newCost)               //     스타트->A 비용> (B까지 코스트 + B->A 비용)
+            {
+                costs[n.first] = newCost;
+                parents[n.first] = node;
+            }
+        }
+        
+        processed[node] = true;
+        node = FindLowCostNode(costs, processed);
+    }
+
+    for (auto i : costs) cout << i.first << ": " << i.second << endl;;
+    for (auto i : parents) cout << i.first << ": " << i.second << endl;
 }
 
 int main()
