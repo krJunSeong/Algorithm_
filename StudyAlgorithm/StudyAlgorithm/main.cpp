@@ -1893,14 +1893,62 @@ void djstra()
     for (auto i : parents) cout << i.first << ": " << i.second << endl;
 }
 
+// 근사 알고리즘
+void ApproximationAlgorithm()
+{
+    vector<string> states_needed{ "mt", "wa", "or", "id", "nv", "ut", "ca", "az" };
+    map<string, vector<string>> stations;
+    stations["kone"] = {"id", "nv", "ut"};
+    stations["ktwo"] = {"wa", "ia", "mt"};
+    stations["kthree"] = {"or","nv","ca"};
+    stations["kfour"] = {"nv", "ut"};
+    stations["kfive"] = {"ca", "az"};
+
+    string best_station;
+    vector<string> states_covered; // 아직 방송되지 않은 주 중에서 해당 방송국이 커버하는 주의 집합
+    vector<string> final_stations;
+
+    while (states_needed.size() > 0)
+    {
+        for (auto station : stations)
+        {
+            vector<string> covered(states_needed.size() + station.second.size());
+
+            sort(states_needed.begin(), states_needed.end());
+            sort(station.second.begin(), station.second.end());
+
+            set_intersection(states_needed.begin(), states_needed.end(),
+                             station.second.begin(), station.second.end(),
+                             covered.begin());
+
+            covered.erase(std::remove(covered.begin(), covered.end(), ""), covered.end());
+
+            if (covered.size() > states_covered.size())
+            {
+                best_station = station.first;
+                states_covered = covered;
+            }
+        }
+
+        states_needed.resize(states_needed.size() + states_covered.size());
+
+        sort(states_needed.begin(), states_needed.end());
+        sort(states_covered.begin(), states_covered.end());
+
+        set_difference(states_needed.begin(), states_needed.end(), 
+                       states_covered.begin(), states_covered.end(), 
+                       states_needed.begin());
+
+        final_stations.push_back(best_station);
+    }
+
+    for (auto i : final_stations)
+        cout << i << endl;
+}
+
 int main()
 {
-    //SearchDragUser();
-    djstra();
-    //FunctionDevelopeDay2();
-    // 
-    //C c;
-    //c.Update();
+    ApproximationAlgorithm();
 }
 
 /* map 사용법, #map #map<map> #map<int>
