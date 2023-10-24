@@ -1896,6 +1896,7 @@ void djstra()
 // 근사 알고리즘
 void ApproximationAlgorithm()
 {
+    // Err: 간접 참조 잘못됨
     vector<string> states_needed{ "mt", "wa", "or", "id", "nv", "ut", "ca", "az" };
     map<string, vector<string>> stations;
     stations["kone"] = {"id", "nv", "ut"};
@@ -1904,42 +1905,44 @@ void ApproximationAlgorithm()
     stations["kfour"] = {"nv", "ut"};
     stations["kfive"] = {"ca", "az"};
 
-    string best_station;
-    vector<string> states_covered; // 아직 방송되지 않은 주 중에서 해당 방송국이 커버하는 주의 집합
     vector<string> final_stations;
 
+    // 남은 커버쳐야 할 지역들
     while (states_needed.size() > 0)
     {
-        for (auto station : stations)
-        {
-            vector<string> covered(states_needed.size() + station.second.size());
+        string bestStation;
+        vector<string> states_covered; // 커버된 지역
 
+        // 커버쳐야 할 지역들 정렬
+        for (auto& station : stations)
+        {                
+            // covered: 남은 지역 중 방송국이 처리가능한 지역
             sort(states_needed.begin(), states_needed.end());
             sort(station.second.begin(), station.second.end());
-
+            int a = states_needed.size();
+            int b = station.second.size();
+            vector<string> covered;
+            
             set_intersection(states_needed.begin(), states_needed.end(),
-                             station.second.begin(), station.second.end(),
-                             covered.begin());
+                            station.second.begin(), station.second.end(),
+                            //covered.begin());
+                            std::back_inserter(covered));
 
-            covered.erase(std::remove(covered.begin(), covered.end(), ""), covered.end());
-
+            // 처리가능 지역 > 방송국 처리지역
+            // 이 방송국이 현재의 bestStation보다 더 많은 주를 커버하는가?
             if (covered.size() > states_covered.size())
             {
-                best_station = station.first;
+                bestStation = station.first;
                 states_covered = covered;
             }
         }
+        
+        // 남은 지역에서 커버된 지역들 빼기(개선필요) && 방송국 선정
+        for (auto i : states_covered)
+            states_needed.erase(std::remove(states_needed.begin(), states_needed.end(), i), states_needed.end());
 
-        states_needed.resize(states_needed.size() + states_covered.size());
-
-        sort(states_needed.begin(), states_needed.end());
-        sort(states_covered.begin(), states_covered.end());
-
-        set_difference(states_needed.begin(), states_needed.end(), 
-                       states_covered.begin(), states_covered.end(), 
-                       states_needed.begin());
-
-        final_stations.push_back(best_station);
+        // states_needed -= states_covered;
+        final_stations.push_back(bestStation);
     }
 
     for (auto i : final_stations)
@@ -1970,4 +1973,9 @@ int main()
 
     // 방법 1) mb["string"]["a"] = 6;
     // 방법 2) mb["string"].insert({"c", 9});
+
+    vector
+        vector 중복제거
+            vector<string> temp;
+            temp.erase(unique(temp.begin(), temp.end()), temp.end())
 */
