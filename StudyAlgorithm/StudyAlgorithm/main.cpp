@@ -1908,8 +1908,6 @@ void ApproximationAlgorithm()
 
           - kone 때 begin()의 경우, "" 때 8 > 7
           -         back_inserter, "" 때 8 > 9, 
-            covered.begin());
-            //std::back_inserter(covered));
   */              
     vector<string> states_needed{ "mt", "wa", "or", "id", "nv", "ut", "ca", "az" };
     map<string, vector<string>> stations;
