@@ -1895,8 +1895,22 @@ void djstra()
 
 // 근사 알고리즘
 void ApproximationAlgorithm()
-{
-    // Err: 간접 참조 잘못됨
+{/*
+     Err: 간접 참조 잘못됨
+        - set_intersection
+     set_interction 문제
+        - 문제: output Vector에 resize로 인해 "" 잉여가 생김
+        - 해결: interction할 때 std::back_inserter(vector3)
+        - 이유: Return value
+                A std::back_insert_iterator which can be used to add elements to the end of the container c
+     해결되는 이유 찾기
+          - backInserter의 경우 뒤에서 한두개 더 원소가 들어가서 해결되는 것으로 보임.
+
+          - kone 때 begin()의 경우, "" 때 8 > 7
+          -         back_inserter, "" 때 8 > 9, 
+            covered.begin());
+            //std::back_inserter(covered));
+  */              
     vector<string> states_needed{ "mt", "wa", "or", "id", "nv", "ut", "ca", "az" };
     map<string, vector<string>> stations;
     stations["kone"] = {"id", "nv", "ut"};
@@ -1919,13 +1933,10 @@ void ApproximationAlgorithm()
             // covered: 남은 지역 중 방송국이 처리가능한 지역
             sort(states_needed.begin(), states_needed.end());
             sort(station.second.begin(), station.second.end());
-            int a = states_needed.size();
-            int b = station.second.size();
             vector<string> covered;
             
             set_intersection(states_needed.begin(), states_needed.end(),
                             station.second.begin(), station.second.end(),
-                            //covered.begin());
                             std::back_inserter(covered));
 
             // 처리가능 지역 > 방송국 처리지역
